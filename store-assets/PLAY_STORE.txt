@@ -1,0 +1,32 @@
+Título: Petteia — ΠΕΤΤΕΙΑ
+Nombre corto: Petteia
+Paquete: com.metamovidas.petteia
+Categoría: Juegos / Estrategia / Tablero
+Clasificación: PEGI 3 / Everyone
+
+Descripción corta:
+Petteia, el juego griego de la pinza. Juega contra la máquina o en línea, con el mismo tablero y estilo de la web.
+
+Descripción:
+ΠΕΤΤΕΙΑ es el juego de tablero de la Grecia clásica. Mueve como la torre, captura en pinza y vence dejando al rival sin piezas o sin jugadas.
+
+• Tutorial guiado
+• Cinco niveles de dificultad, de Paidion a Palamedes
+• Partidas en línea con código de sala
+• Español, English, Français y Русский
+• El mismo diseño de mármol, oro y egeo de la web
+
+Sin anuncios en esta versión. Se podrán activar más adelante en una actualización.
+
+Icono 512: store-assets/icon-512.png
+Gráfico destacada 1024x500: store-assets/feature-graphic.png
+Política de privacidad: sube www/privacy.html a Netlify y pega la URL en Play Console.
+
+Cuando actives publicidad:
+1. Crea la app en AdMob
+2. Pon los IDs en www/js/ads.js (enabled: true)
+3. Descomenta AdMob en AndroidManifest.xml y android/app/build.gradle
+4. Declara el permiso AD_ID en Play Console
+5. Sube un AAB nuevo (versionCode 2)
+
+La clave de firma está en android/keystore/ — GUÁRDALA. Sin ella no hay actualizaciones en Play.

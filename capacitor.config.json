@@ -1,0 +1,35 @@
+{
+  "appId": "com.metamovidas.petteia",
+  "appName": "Petteia",
+  "webDir": "www",
+  "backgroundColor": "#0c1c33",
+  "android": {
+    "backgroundColor": "#0c1c33",
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "useLegacyBridge": false,
+    "adjustMarginsForEdgeToEdge": "disable"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 380,
+      "launchAutoHide": true,
+      "backgroundColor": "#0c1c33",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0c1c33",
+      "overlaysWebView": true
+    },
+    "Keyboard": {
+      "resize": "native",
+      "resizeOnFullScreen": false
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "petteia",
+  "version": "1.0.29",
+  "description": "Petteia — juego griego de tablero para Android",
+  "private": true,
+  "author": "Metamovidas",
+  "scripts": {
+    "prepare:www": "node scripts/prepare-www.js",
+    "icons": "node scripts/generate-icons.js",
+    "sync": "node scripts/prepare-www.js && npx cap sync android",
+    "apk": "node scripts/build-android.js",
+    "aab": "node scripts/build-android.js --aab"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.8",
+    "@capacitor/app": "7.1.2",
+    "@capacitor/clipboard": "7.0.4",
+    "@capacitor/core": "7.6.8",
+    "@capacitor/haptics": "7.0.5",
+    "@capacitor/keyboard": "7.0.6",
+    "@capacitor/splash-screen": "7.0.5",
+    "@capacitor/status-bar": "7.0.6"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.8",
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}
