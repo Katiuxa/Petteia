@@ -7,7 +7,7 @@ const os = require("os");
 const { exec } = require("child_process");
 
 const PORT = 8787;
-const ROOT = __dirname;
+const ROOT = path.join(__dirname, "docs");
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",

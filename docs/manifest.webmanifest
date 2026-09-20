@@ -1,0 +1,17 @@
+{
+  "name": "ΠΕΤΤΕΙΑ",
+  "short_name": "Petteia",
+  "description": "Petteia",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c1c33",
+  "theme_color": "#0c1c33",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
