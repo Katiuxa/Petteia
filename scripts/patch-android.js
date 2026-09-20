@@ -5,6 +5,10 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const ROOT = path.join(__dirname, "..");
+const PKG = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
+const VERSION_NAME = PKG.version || "1.0.30";
+const VERSION_PARTS = String(VERSION_NAME).split(".").map(function (n) { return parseInt(n, 10) || 0; });
+const VERSION_CODE = Number(PKG.androidVersionCode) || 31;
 const ANDROID = path.join(ROOT, "android");
 const APP = path.join(ANDROID, "app");
 const SRC = path.join(APP, "src", "main");
@@ -108,8 +112,8 @@ android {`
             signingConfig signingConfigs.release`
     );
   }
-  s = s.replace(/versionCode \d+/, "versionCode 29");
-  s = s.replace(/versionName "[^"]+"/, 'versionName "1.0.28"');
+  s = s.replace(/versionCode \d+/, "versionCode " + VERSION_CODE);
+  s = s.replace(/versionName "[^"]+"/, 'versionName "' + VERSION_NAME + '"');
   if (!s.includes("vectorDrawables.useSupportLibrary")) {
     s = s.replace(
       "defaultConfig {",
@@ -164,11 +168,10 @@ function patchManifest() {
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
 
-        <!-- Cuando actives AdMob, descomenta y pon tu ID real:
+        <!-- AdMob App ID (strings.xml → admob_app_id). Must use "~", not "/". -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy" />
-        -->
+            android:value="@string/admob_app_id" />
 
         <activity
             android:name=".MainActivity"
@@ -223,6 +226,17 @@ function patchStrings() {
   s = s.replace(/<string name="title_activity_main">[^<]+<\/string>/, '<string name="title_activity_main">Petteia</string>');
   s = s.replace(/<string name="package_name">[^<]+<\/string>/, '<string name="package_name">com.metamovidas.petteia</string>');
   s = s.replace(/<string name="custom_url_scheme">[^<]+<\/string>/, '<string name="custom_url_scheme">com.metamovidas.petteia</string>');
+  if (!s.includes("admob_app_id")) {
+    s = s.replace(
+      "</resources>",
+      '    <string name="admob_app_id">ca-app-pub-8973581015975783~3084353510</string>\n</resources>'
+    );
+  } else {
+    s = s.replace(
+      /<string name="admob_app_id">[^<]+<\/string>/,
+      '<string name="admob_app_id">ca-app-pub-8973581015975783~3084353510</string>'
+    );
+  }
   fs.writeFileSync(file, s);
   console.log("edit strings.xml");
 }
@@ -271,6 +285,10 @@ function patchStyles() {
 }
 
 function copyIcons() {
+  if (fs.existsSync(path.join(ROOT, "assets", "brand", "icon-full.svg"))) {
+    console.log("skip copyIcons (brand logo pipeline)");
+    return;
+  }
   const png = path.join(ROOT, "resources", "icon.png");
   if (!fs.existsSync(png)) {
     console.warn("falta resources/icon.png");
@@ -379,7 +397,7 @@ function main() {
   if (fs.existsSync(vars)) {
     let s = fs.readFileSync(vars, "utf8");
     s = s.replace(/minSdkVersion = \d+/, "minSdkVersion = 24");
-    s = s.replace(/compileSdkVersion = \d+/, "compileSdkVersion = 35");
+    s = s.replace(/compileSdkVersion = \d+/, "compileSdkVersion = 36");
     s = s.replace(/targetSdkVersion = \d+/, "targetSdkVersion = 35");
     fs.writeFileSync(vars, s);
     console.log("edit variables.gradle");

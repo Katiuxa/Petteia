@@ -3,6 +3,7 @@ android/.gradle/
 android/build/
 android/app/build/
 android/app/.cxx/
+android/**/build/
 android/local.properties
 android/captures/
 android/keystore/*.jks
@@ -13,8 +14,16 @@ android/keystore/LEEEME.txt
 *.aab
 *.apks
 *.idsig
+*.zip
 .idea/
 *.iml
 .DS_Store
-www/fonts/*.woff2
 dist-android/
+con-publicidad/
+sin-publicidad/
+www/*
+!www/css/
+!www/css/android.css
+!www/js/
+!www/js/android-bridge.js
+www/fonts/

@@ -1,28 +1,31 @@
 {
   "name": "petteia",
-  "version": "1.0.29",
+  "version": "1.0.59",
+  "androidVersionCode": 59,
   "description": "Petteia — juego griego de tablero para Android",
   "private": true,
   "author": "Metamovidas",
   "scripts": {
     "prepare:www": "node scripts/prepare-www.js",
-    "icons": "node scripts/generate-icons.js",
+    "icons": "node scripts/apply-logo.mjs && node scripts/build-icons.mjs",
     "sync": "node scripts/prepare-www.js && npx cap sync android",
     "apk": "node scripts/build-android.js",
     "aab": "node scripts/build-android.js --aab"
   },
   "dependencies": {
-    "@capacitor/android": "7.6.8",
-    "@capacitor/app": "7.1.2",
-    "@capacitor/clipboard": "7.0.4",
-    "@capacitor/core": "7.6.8",
-    "@capacitor/haptics": "7.0.5",
-    "@capacitor/keyboard": "7.0.6",
-    "@capacitor/splash-screen": "7.0.5",
-    "@capacitor/status-bar": "7.0.6"
+    "@capacitor-community/admob": "8.1.0",
+    "@capacitor/android": "8.5.0",
+    "@capacitor/app": "8.1.1",
+    "@capacitor/clipboard": "8.0.1",
+    "@capacitor/core": "8.5.0",
+    "@capacitor/haptics": "8.0.1",
+    "@capacitor/keyboard": "8.0.5",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.3"
   },
   "devDependencies": {
-    "@capacitor/cli": "7.6.8",
-    "@resvg/resvg-js": "^2.6.2"
+    "@capacitor/cli": "8.5.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "sharp": "^0.35.4"
   }
 }

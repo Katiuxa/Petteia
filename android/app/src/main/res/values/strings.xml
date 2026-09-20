@@ -4,4 +4,7 @@
     <string name="title_activity_main">Petteia</string>
     <string name="package_name">com.metamovidas.petteia</string>
     <string name="custom_url_scheme">com.metamovidas.petteia</string>
+    <string name="admob_app_id">ca-app-pub-8973581015975783~3084353510</string>
+    <string name="admob_banner_id">ca-app-pub-8973581015975783/4687360598</string>
+    <string name="admob_interstitial_id">ca-app-pub-8973581015975783/3294387877</string>
 </resources>

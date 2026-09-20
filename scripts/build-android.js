@@ -79,7 +79,7 @@ function resignWithV1(apk) {
   if (r.status) process.exit(r.status);
 }
 
-run("node", ["scripts/generate-icons.js"]);
+run("npm", ["run", "icons"]);
 run("node", ["scripts/prepare-www.js"]);
 run("npx", ["cap", "sync", "android"]);
 
@@ -87,18 +87,23 @@ const gw = process.platform === "win32" ? "gradlew.bat" : "./gradlew";
 run(gw, ["assembleRelease"], ANDROID);
 if (wantAab) run(gw, ["bundleRelease"], ANDROID);
 
+const PKG = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
+const VER = PKG.version || "0.0.0";
+
 fs.mkdirSync(OUT, { recursive: true });
 copyIf(
   path.join(ANDROID, "app", "build", "outputs", "apk", "release", "app-release.apk"),
-  path.join(OUT, "Petteia-1.0.29.apk")
+  path.join(OUT, "Petteia-" + VER + ".apk")
 );
-resignWithV1(path.join(OUT, "Petteia-1.0.29.apk"));
+resignWithV1(path.join(OUT, "Petteia-" + VER + ".apk"));
 copyIf(
   path.join(ANDROID, "app", "build", "outputs", "apk", "release", "app-release-unsigned.apk"),
-  path.join(OUT, "Petteia-1.0.29-unsigned.apk")
+  path.join(OUT, "Petteia-" + VER + "-unsigned.apk")
 );
 copyIf(
   path.join(ANDROID, "app", "build", "outputs", "bundle", "release", "app-release.aab"),
-  path.join(OUT, "Petteia-1.0.29.aab")
+  path.join(OUT, "Petteia-" + VER + ".aab")
 );
+const desktopApk = path.join(process.env.USERPROFILE || "", "Desktop", "INSTALAR_PETTEIA.apk");
+copyIf(path.join(OUT, "Petteia-" + VER + ".apk"), desktopApk);
 console.log("Listo en " + OUT);

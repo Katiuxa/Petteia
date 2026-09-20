@@ -87,12 +87,12 @@ function patchHtml(html) {
   );
   html = html.replace(
     /<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com" \/>\s*<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com" crossorigin \/>\s*<link href="https:\/\/fonts\.googleapis\.com\/css2\?[^"]+" rel="stylesheet" \/>/,
-    '<link rel="stylesheet" href="fonts/fonts.css" />\n  <link rel="stylesheet" href="css/android.css" />'
+    '<link rel="stylesheet" href="fonts/fonts.css" />\n  <link rel="stylesheet" href="css/android.css" />\n  <link rel="stylesheet" href="css/ads.css" />'
   );
   if (!html.includes("js/android-bridge.js")) {
     html = html.replace(
       "</body>",
-      '  <script src="js/ads.js"></script>\n  <script src="js/android-bridge.js"></script>\n</body>'
+      '  <script src="js/ads-config.js"></script>\n  <script src="js/ads-manager.js"></script>\n  <script src="js/android-bridge.js"></script>\n</body>'
     );
   }
   html = html.replace("<html lang=\"es\">", '<html lang="es" class="is-native android-app">');
@@ -128,6 +128,17 @@ async function main() {
   const src = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
   fs.writeFileSync(path.join(WWW, "index.html"), patchHtml(src));
   fs.copyFileSync(path.join(ROOT, "favicon.svg"), path.join(WWW, "favicon.svg"));
+  const brandSrc = path.join(ROOT, "assets", "brand");
+  const brandDest = path.join(WWW, "brand");
+  fs.mkdirSync(brandDest, { recursive: true });
+  for (const name of ["boot-tile.png", "icon-full.png"]) {
+    const p = path.join(brandSrc, name);
+    if (fs.existsSync(p)) fs.copyFileSync(p, path.join(brandDest, name));
+  }
+  const ads = path.join(ROOT, "ads");
+  fs.copyFileSync(path.join(ads, "ads-config.js"), path.join(WWW, "js", "ads-config.js"));
+  fs.copyFileSync(path.join(ads, "ads-manager.js"), path.join(WWW, "js", "ads-manager.js"));
+  fs.copyFileSync(path.join(ads, "ads.css"), path.join(WWW, "css", "ads.css"));
   console.log("www listo");
 }
 
