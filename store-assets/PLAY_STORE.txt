@@ -20,7 +20,7 @@ Sin anuncios en esta versión. Se podrán activar más adelante en una actualiza
 
 Icono 512: store-assets/icon-512.png
 Gráfico destacada 1024x500: store-assets/feature-graphic.png
-Política de privacidad: sube www/privacy.html a Netlify y pega la URL en Play Console.
+Política de privacidad: publica www/privacy.html en Vercel y pega la URL en Play Console.
 
 Cuando actives publicidad:
 1. Crea la app en AdMob

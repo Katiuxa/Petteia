@@ -4,9 +4,9 @@ Juego griego de tablero. Web y Android en el mismo repo, en carpetas distintas.
 
 ## Web
 
-https://katiuxa.github.io/Petteia/
+https://petteia.vercel.app
 
-Código en `docs/`. Esa carpeta es también el publish de Netlify.
+Código en `docs/`. Esa carpeta es la que se publica en Vercel.
 
 ```bash
 node server.js

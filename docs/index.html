@@ -45,7 +45,7 @@
       --inset-bottom: max(env(safe-area-inset-bottom, 0px), var(--android-inset-bottom));
       --inset-left: max(env(safe-area-inset-left, 0px), var(--android-inset-left));
       --nav-gap: var(--inset-bottom);
-      --coach-dock: 9.2rem;
+      --coach-dock: clamp(10.8rem, 34dvh, 14rem);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -175,7 +175,33 @@
       pointer-events: none;
       z-index: 1;
     }
+    .hero-logo {
+      display: none;
+      pointer-events: none;
+      user-select: none;
+      width: min(4.2rem, 18vw);
+      height: auto;
+      margin: 0 0 -0.1rem;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35));
+    }
+    /* Web: never show the square logo above ΠΕΤΤΕΙΑ */
+    html:not(.android-app):not(.is-native) .hero-logo {
+      display: none !important;
+    }
     .hero-brand button { pointer-events: auto; }
+
+    /* Web: language / sound — clearance from top (boot has its own layout) */
+    html:not(.android-app):not(.is-native) header.hero {
+      padding-top: 0.42rem;
+      padding-bottom: 0;
+      align-items: start;
+    }
+    html:not(.android-app):not(.is-native) .hero-tools,
+    html:not(.android-app):not(.is-native) .hero-end {
+      align-self: start;
+      margin-top: 0.12rem;
+      padding-top: 0;
+    }
 
     header.hero h1 {
       margin: 0;
@@ -1276,9 +1302,20 @@
     }
 
     .custodia-tip {
-      display: none !important;
+      position: absolute;
+      z-index: 40;
+      max-width: 220px;
+      background: var(--aegean-deep);
+      color: var(--papyrus);
+      border: 1px solid var(--gold);
+      padding: 0.45rem 0.6rem;
+      font-size: 0.88rem;
+      pointer-events: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,.4);
+      transform: translate(-50%, -120%);
+      display: none;
     }
-    .custodia-tip.show { display: none !important; }
+    .custodia-tip.show { display: block; }
 
     .welcome {
       position: absolute;
@@ -1366,7 +1403,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      z-index: 200;
+      z-index: 80;
       background: rgba(8, 14, 26, 0.78);
       display: none;
       place-items: center;
@@ -1423,6 +1460,7 @@
       display: inline;
     }
     .modal-help {
+      position: relative;
       width: min(680px, 94vw);
       display: flex;
       flex-direction: column;
@@ -1433,8 +1471,28 @@
       overflow: auto;
       flex: 1 1 auto;
       min-height: 0;
-      padding-right: 0.15rem;
+      padding-right: 0.45rem;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #c9a227 rgba(20, 36, 48, 0.35);
+    }
+    .modal-help .help-body::-webkit-scrollbar {
+      width: 9px;
+    }
+    .modal-help .help-body::-webkit-scrollbar-track {
+      margin: 0.2rem 0;
+      background: linear-gradient(180deg, rgba(20, 36, 48, 0.12), rgba(20, 36, 48, 0.28));
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+    }
+    .modal-help .help-body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #e8cc6a, #a67c1a 55%, #7a5a12);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 236, 170, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(42, 28, 8, 0.25);
+    }
+    .modal-help .help-body::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #f0d878, #c9a227 55%, #8a6818);
     }
     .modal-help > .controls {
       flex-shrink: 0;
@@ -1794,6 +1852,7 @@
     }
 
     footer.colophon {
+      display: none !important;
       position: relative;
       z-index: 2;
       text-align: center;
@@ -1963,17 +2022,133 @@
       html:not(.android-app):not(.is-native) .board-orla {
         width: max-content;
         max-width: 100%;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.2rem;
       }
       html:not(.android-app):not(.is-native) .move-dock {
+        min-height: 52px;
         flex-shrink: 0;
-        min-height: 72px;
+        position: relative;
+        z-index: 4;
+      }
+      html:not(.android-app):not(.is-native) .nav-btn {
+        height: 40px;
+      }
+      html:not(.android-app):not(.is-native) .nav-btn svg {
+        width: 22px;
+        height: 15px;
+      }
+      html:not(.android-app):not(.is-native) #ply-slider {
+        height: 22px;
       }
       html:not(.android-app):not(.is-native) #board {
-        width: min(620px, calc(100dvh - 20.5rem), calc(100vw - 31rem));
+        width: min(680px, calc(100dvh - 17.2rem), calc(100vw - 31rem));
+      }
+      /* Web tutorial: board LEFT, coach panel RIGHT — never overlay the board.
+         (Generic body.is-tutorial rules lose to web .layout specificity and put
+         the board into the side column.) */
+      html:not(.android-app):not(.is-native) body.is-tutorial .layout {
+        display: grid;
+        grid-template-columns: minmax(0, max-content) minmax(18rem, 26rem);
+        grid-template-rows: auto;
+        justify-content: center;
+        align-items: start;
+        gap: 1.15rem 1.55rem;
+        max-width: min(1480px, 100%);
+        width: 100%;
+        margin: 0.35rem auto 0;
+        padding: 0.35rem 0.7rem 0.55rem;
+        overflow: auto;
+        min-height: 0;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .board-column {
+        grid-column: 1;
+        grid-row: 1;
+        order: 1;
+        position: relative;
+        z-index: 1;
+        width: auto;
+        max-width: min(100%, calc(100vw - 30rem));
+        justify-self: center;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .side-stack {
+        grid-column: 2;
+        grid-row: 1;
+        order: 2;
+        position: relative;
+        z-index: 1;
+        margin-top: 0.2rem;
+        width: 100%;
+        max-width: 26rem;
+        max-height: calc(100dvh - 6.5rem);
+        overflow: auto;
+        justify-self: stretch;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules,
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 100%;
+        justify-self: stretch;
+        padding: 0 !important;
+        margin: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca::before,
+      html:not(.android-app):not(.is-native) body.is-tutorial .panel-greca::before {
+        display: none !important;
+        content: none;
+        height: 0;
+        margin: 0;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #guide-coach {
+        position: static;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 26rem;
+        height: 26rem;
+        max-height: 26rem;
+        margin: 0;
+        padding: 0.85rem 1rem 0.75rem;
+        box-sizing: border-box;
+        overflow: hidden;
+        background: linear-gradient(180deg, #f7f0de 0%, var(--papyrus) 40%, #eadcb8 100%);
+        border: 1px solid var(--gold);
+        box-shadow: 0 10px 28px rgba(12, 20, 36, 0.28), inset 0 0 0 3px #122a4a;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-body {
+        min-height: 4.6rem;
+        margin-bottom: 0.55rem;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-task {
+        min-height: 4.4rem;
+        box-sizing: border-box;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .controls.coach-btns {
+        margin-top: 0.55rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        flex: 0 0 auto;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-dots {
+        margin-bottom: 0.1rem;
+        flex: 0 0 auto;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial #board {
-        width: min(720px, calc(100dvh - 12.5rem), calc(100vw - 31rem));
+        width: min(520px, calc(100dvh - 14rem), calc(100vw - 36rem));
       }
       html:not(.android-app):not(.is-native) .side-stack {
         max-height: calc(100dvh - 7.5rem);
@@ -2017,8 +2192,8 @@
 
     @media (max-width: 980px), (hover: none) and (pointer: coarse) {
       :root {
-        --nav-gap: var(--inset-bottom);
-        --coach-dock: 9.2rem;
+        --nav-gap: max(var(--inset-bottom), 5.25rem);
+        --coach-dock: clamp(10.5rem, 30svh, 12.8rem);
       }
       html, body {
         -webkit-tap-highlight-color: transparent;
@@ -2042,8 +2217,16 @@
       header.hero {
         grid-template-columns: 1fr 1fr;
         gap: 0;
-        padding: 0.06rem 0.28rem 0;
-        padding-top: max(0.06rem, var(--inset-top));
+        padding: 0.12rem 0.28rem 0;
+        padding-top: max(0.38rem, var(--inset-top));
+        align-items: start;
+      }
+      html:not(.android-app):not(.is-native) header.hero {
+        padding-top: max(0.42rem, var(--inset-top));
+      }
+      html:not(.android-app):not(.is-native) .hero-tools,
+      html:not(.android-app):not(.is-native) .hero-end {
+        margin-top: 0.1rem;
       }
       header.hero h1 button {
         font-size: clamp(1.55rem, 7.2vw, 2.05rem);
@@ -2105,6 +2288,119 @@
         box-sizing: border-box;
         gap: 0;
       }
+      /* Web mobile: board size locked (svh + no flex-shrink) so coach text never resizes it */
+      html:not(.android-app):not(.is-native) body.is-tutorial {
+        overflow: hidden !important;
+        overscroll-behavior: none;
+        touch-action: manipulation;
+        height: 100svh;
+        max-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        --coach-dock: clamp(10.5rem, 30svh, 12.8rem);
+        --hero-h: 2.85rem;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .layout {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        max-height: none;
+        overflow: hidden;
+        gap: 0;
+        padding: 0.06rem 0.35rem 0;
+        margin: 0;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .board-column {
+        order: 1;
+        flex: 0 0 auto;
+        flex-shrink: 0;
+        min-height: 0;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        overflow: hidden;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #board {
+        width: min(
+          100%,
+          calc(100svh - var(--inset-top, 0px) - var(--hero-h, 2.85rem) - var(--coach-dock) - 0.55rem)
+        );
+        max-width: 100%;
+        flex-shrink: 0;
+        aspect-ratio: 1 / 1;
+        margin: 0 auto;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules,
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca {
+        order: 2;
+        flex: 0 0 var(--coach-dock);
+        width: 100%;
+        height: var(--coach-dock);
+        max-height: var(--coach-dock);
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #guide-coach {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        flex: 1 1 auto;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        max-height: 100%;
+        margin: 0;
+        padding: 0.28rem 0.55rem 0.4rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: linear-gradient(180deg, #f7f0de 0%, #eadcb8 100%);
+        border-top: 1px solid rgba(212, 175, 55, 0.55);
+        box-shadow: 0 -8px 22px rgba(8, 6, 4, 0.28);
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .controls.coach-btns {
+        position: static;
+        flex: 0 0 auto;
+        margin: 0.28rem 0 0;
+      }
+      /* Rules modal on mobile web: full usable sheet like the app */
+      html:not(.android-app):not(.is-native) #overlay-help {
+        align-items: stretch;
+        place-items: stretch;
+        padding-top: max(0.2rem, var(--inset-top));
+        padding-bottom: max(0.28rem, var(--nav-gap));
+      }
+      html:not(.android-app):not(.is-native) #overlay-help .modal-help {
+        height: calc(100dvh - var(--inset-top) - var(--nav-gap) - 0.45rem);
+        max-height: calc(100dvh - var(--inset-top) - var(--nav-gap) - 0.45rem);
+        min-height: calc(100dvh - var(--inset-top) - var(--nav-gap) - 0.45rem);
+        padding-bottom: 0.45rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      html:not(.android-app):not(.is-native) #overlay-help .help-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+      }
       body.is-tutorial .board-column {
         order: 1;
         flex: 0 0 auto;
@@ -2118,8 +2414,8 @@
         margin: 0;
       }
       body.is-tutorial header.hero {
-        padding: 0.08rem 0.35rem 0;
-        padding-top: max(0.08rem, var(--inset-top));
+        padding: 0.12rem 0.35rem 0;
+        padding-top: max(0.42rem, var(--inset-top));
       }
       body.is-tutorial header.hero h1 button {
         font-size: clamp(1.62rem, 7.8vw, 2.15rem);
@@ -2130,7 +2426,7 @@
       }
       body.is-tutorial #panel-rules {
         order: 2;
-        flex: 0 0 auto;
+        flex: 1 1 auto;
         width: 100%;
         height: auto;
         min-height: 0;
@@ -2139,7 +2435,9 @@
         border: 0;
         background: none;
         box-shadow: none;
-        overflow: visible;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
       body.is-tutorial #panel-rules.panel-greca,
       body.is-tutorial .panel-greca {
@@ -2325,9 +2623,15 @@
         -webkit-touch-callout: none;
       }
       body.is-tutorial #board {
-        width: min(100%, calc(100dvh - var(--inset-top) - 2.7rem - var(--coach-dock) - var(--nav-gap)));
+        width: min(
+          100%,
+          calc(100svh - var(--inset-top, 0px) - var(--hero-h, 2.85rem) - var(--coach-dock) - 0.55rem)
+        );
         max-width: 100%;
-        max-height: min(100%, calc(100dvh - var(--inset-top) - 2.7rem - var(--coach-dock) - var(--nav-gap)));
+        max-height: none;
+        height: auto;
+        flex-shrink: 0;
+        aspect-ratio: 1;
         margin: 0 auto;
       }
       .piece {
@@ -2366,14 +2670,6 @@
         line-height: 1.2;
       }
       .nav-btn { height: 36px; }
-      html:not(.android-app):not(.is-native) .move-dock {
-        min-height: 68px;
-        flex-shrink: 0;
-      }
-      html:not(.android-app):not(.is-native) .nav-btn {
-        height: 44px;
-        min-height: 44px;
-      }
       .move-dock { min-height: 0; }
       #ply-slider { height: 22px; }
       .counts { gap: 0; margin-bottom: 0.22rem; }
@@ -2449,7 +2745,12 @@
       }
 
       .custodia-tip {
-        display: none !important;
+        position: fixed;
+        left: 50% !important;
+        top: auto !important;
+        bottom: calc(5.6rem + var(--nav-gap));
+        transform: translateX(-50%);
+        max-width: calc(100vw - 1.4rem);
       }
 
       .overlay {
@@ -2652,18 +2953,90 @@
       animation: bootFadeOut 0.55s ease-in forwards;
     }
     .boot-intro[hidden] { display: none !important; }
-    /* Desktop web uses overlay-start; native + mobile web keep the boot screen */
+    /* Desktop web uses overlay-start; native + mobile web keep the boot screen
+       (Tutorial / Reglas entry). Hiding boot on all web broke mobile Netlify. */
     @media (min-width: 981px) and (hover: hover) and (pointer: fine) {
       html:not(.android-app):not(.is-native) #boot-intro {
         display: none !important;
       }
+    }
+    /* Web mobile boot: keep chrome above frame; buttons always tappable */
+    @media (max-width: 980px), (hover: none) and (pointer: coarse) {
+      html:not(.android-app):not(.is-native) #boot-intro {
+        display: flex !important;
+        padding-top: max(3.4rem, calc(var(--inset-top) + 2.6rem));
+        padding-bottom: calc(var(--nav-gap) + 2.6rem);
+      }
+      html:not(.android-app):not(.is-native) #boot-intro[hidden] {
+        display: none !important;
+      }
+      html:not(.android-app):not(.is-native) .boot-langs,
+      html:not(.android-app):not(.is-native) .boot-sounds {
+        z-index: 220;
+        top: max(0.9rem, calc(var(--inset-top) + 0.55rem));
+      }
+      html:not(.android-app):not(.is-native) .boot-langs {
+        left: max(0.75rem, calc(var(--inset-left) + 0.4rem));
+      }
+      html:not(.android-app):not(.is-native) .boot-sounds {
+        right: max(0.75rem, calc(var(--inset-right) + 0.4rem));
+      }
+      html:not(.android-app):not(.is-native) .boot-frame {
+        position: relative;
+        z-index: 1;
+        pointer-events: auto;
+      }
+      html:not(.android-app):not(.is-native) .boot-greca {
+        pointer-events: none !important;
+        z-index: 0;
+      }
+      html:not(.android-app):not(.is-native) .boot-tile {
+        position: relative;
+        z-index: 2;
+      }
+      html:not(.android-app):not(.is-native) .boot-tile img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      html:not(.android-app):not(.is-native) .boot-actions {
+        position: relative;
+        z-index: 3;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+      }
+      html:not(.android-app):not(.is-native) .boot-actions .btn {
+        pointer-events: auto !important;
+        touch-action: manipulation;
+      }
+      html:not(.android-app):not(.is-native) .page-frame {
+        pointer-events: none !important;
+        z-index: 40;
+      }
+      /* Overlays (Jugar / Reglas) must stack above the boot menu and the frame. */
+      html:not(.android-app):not(.is-native) .overlay {
+        z-index: 300;
+      }
+    }
+    /* Web build ships no ad scripts; this keeps any ad chrome out even if injected. */
+    html:not(.android-app):not(.is-native) .lat-ad-banner,
+    html:not(.android-app):not(.is-native) .lat-ad-interstitial,
+    html:not(.android-app):not(.is-native) .lat-ad-buy-fab,
+    html:not(.android-app):not(.is-native) .lat-ad-noads-fab,
+    html:not(.android-app):not(.is-native) .lat-ad-dev-launch,
+    html:not(.android-app):not(.is-native) .lat-metamo {
+      display: none !important;
+    }
+    html:not(.android-app):not(.is-native) {
+      --ad-banner-h: 0px;
     }
     .boot-frame {
       position: relative;
       width: min(24.5rem, calc(100% - 1.4rem));
       text-align: center;
       padding: 1.85rem 1.55rem 1.3rem;
-      margin-top: 2.8rem;
       margin-bottom: 0.35rem;
       max-height: calc(100dvh - var(--inset-top) - var(--nav-gap) - 3.4rem);
       overflow: auto;
@@ -2728,7 +3101,7 @@
       animation: bootSeal 1.05s cubic-bezier(.2,.8,.2,1) both;
       filter: drop-shadow(0 12px 20px rgba(0,0,0,.48));
     }
-    .boot-tile svg { display: block; width: 100%; height: 100%; }
+    .boot-tile svg, .boot-tile img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .boot-title {
       font-family: "Cinzel Decorative", Cinzel, serif;
       font-size: clamp(1.55rem, 6.4vw, 2.2rem);
@@ -2772,6 +3145,10 @@
       left: 0.6rem; right: 0.6rem;
       bottom: calc(0.28rem + var(--nav-gap));
       z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.38em;
       text-align: center;
       font-family: "EB Garamond", Garamond, serif;
       font-size: 0.62rem;
@@ -2809,7 +3186,7 @@
     }
     html.android-app,
     html.is-native {
-      --nav-gap: max(var(--inset-bottom), var(--android-inset-bottom), 5.25rem);
+      --nav-gap: var(--bottom-chrome, 0px);
     }
     html.android-app .move-dock,
     html.is-native .move-dock {
@@ -2912,28 +3289,7 @@
       <div class="boot-greca boot-greca-l" aria-hidden="true"></div>
       <div class="boot-greca boot-greca-r" aria-hidden="true"></div>
       <div class="boot-tile">
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <defs>
-            <radialGradient id="bootNavy" cx="36%" cy="28%" r="72%">
-              <stop offset="0%" stop-color="#23456f"/>
-              <stop offset="100%" stop-color="#0a1628"/>
-            </radialGradient>
-            <radialGradient id="bootStone" cx="34%" cy="30%" r="68%">
-              <stop offset="0%" stop-color="#fff8ea"/>
-              <stop offset="52%" stop-color="#f0e2c4"/>
-              <stop offset="100%" stop-color="#c4ae82"/>
-            </radialGradient>
-          </defs>
-          <rect width="64" height="64" rx="14" fill="url(#bootNavy)"/>
-          <circle cx="32" cy="32" r="27.2" fill="none" stroke="#d4af37" stroke-width="2.1"/>
-          <circle cx="32" cy="32" r="23.6" fill="none" stroke="#e8cc6a" stroke-width="0.85"/>
-          <path fill="none" stroke="#d4af37" stroke-width="1.25" d="M20 12.4h4.6V9.6h4.6v2.8h4.6V9.6h4.6v2.8H44"/>
-          <path fill="none" stroke="#d4af37" stroke-width="1.25" d="M51.6 20v4.6h2.8v4.6h-2.8v4.6h2.8v4.6h-2.8V44"/>
-          <path fill="none" stroke="#d4af37" stroke-width="1.25" d="M44 51.6h-4.6v2.8h-4.6v-2.8h-4.6v2.8h-4.6v-2.8H20"/>
-          <path fill="none" stroke="#d4af37" stroke-width="1.25" d="M12.4 44v-4.6H9.6v-4.6h2.8v-4.6H9.6v-4.6h2.8V20"/>
-          <circle cx="32" cy="32" r="15.6" fill="url(#bootStone)" stroke="#c9a24e" stroke-width="1.45"/>
-          <text x="32" y="41.2" text-anchor="middle" font-family="'Cinzel Decorative', Cinzel, serif" font-size="22" font-weight="700" fill="#2c1a0c">Π</text>
-        </svg>
+        <img src="boot-tile.png" alt="" width="512" height="512" decoding="async" />
       </div>
       <p class="boot-title">ΠΕΤΤΕΙΑ</p>
       <p class="boot-sub">PETTEIA</p>
@@ -2944,7 +3300,7 @@
         <button class="btn" id="boot-rules" type="button" data-i18n="btn.rules">Reglas</button>
       </div>
     </div>
-    <p class="boot-colophon">Made with <span class="heart" aria-hidden="true">❤️</span> by Metamovidas</p>
+    <p class="boot-colophon"><span>Made with</span><span class="heart" aria-hidden="true">❤️</span><span>by Metamovidas</span></p>
   </div>
   <div class="page-frame" aria-hidden="true">
     <div class="greca greca-t"></div>
@@ -2968,6 +3324,7 @@
       </div>
     </div>
     <div class="hero-brand">
+      <img class="hero-logo" src="brand/icon-full.png" alt="" width="512" height="512" decoding="async" />
       <h1><button type="button" id="title-reload" data-i18n-title="title.reload" title="Menú principal">ΠΕΤΤΕΙΑ</button></h1>
     </div>
     <div class="hero-end">
@@ -3203,8 +3560,8 @@
       if (!el) return;
       const isNative = document.documentElement.classList.contains("android-app")
         || document.documentElement.classList.contains("is-native");
-      const isDesktopWeb = !isNative
-        && window.matchMedia
+      /* Desktop web keeps overlay-start as entry; mobile web matches the app boot menu. */
+      const isDesktopWeb = !isNative && window.matchMedia
         && window.matchMedia("(min-width: 981px) and (hover: hover) and (pointer: fine)").matches;
       if (isDesktopWeb) {
         el.hidden = true;
@@ -3227,7 +3584,7 @@
       };
       window.petteiaDismissIntro = hide;
       window.petteiaShowIntro = show;
-      window.setTimeout(() => el.classList.add("ready"), reduce ? 0 : 1100);
+      el.classList.add("ready");
     })();
 
     window.petteiaConsumeBack = function () {
@@ -4098,6 +4455,7 @@
     let audioCtx = null;
     let audioArmed = false;
     let noiseBuf = null;
+    let sfxBusNode = null;
     const music = { nodes: [], timer: 0, gain: null, step: 0 };
     const ROOM_ALPH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     const MQTT_URLS = [
@@ -4751,7 +5109,7 @@
     }
 
     function fileLetter(c) {
-      return COLS[SIZE - 1 - c];
+      return COLS[c];
     }
 
     function rankNum(r) {
@@ -4800,14 +5158,14 @@
     function stampSquareCoords(cell, r, c) {
       const flip = boardFlipped();
       const botR = flip ? 0 : SIZE - 1;
-      const leftC = flip ? SIZE - 1 : 0;
+      /* α stays on the visual left even when ranks are flipped for black. */
       if (r === botR) {
         const s = document.createElement("span");
         s.className = "sq-coord sq-file";
         s.textContent = fileLetter(c);
         cell.appendChild(s);
       }
-      if (c === leftC) {
+      if (c === 0) {
         const s = document.createElement("span");
         s.className = "sq-coord sq-rank";
         s.textContent = RANK_GLYPH[rankNum(r)];
@@ -4831,10 +5189,9 @@
         els.ranks.appendChild(span);
       }
       for (let vc = 0; vc < SIZE; vc++) {
-        const c = flip ? SIZE - 1 - vc : vc;
         const span = document.createElement("span");
-        span.textContent = fileLetter(c);
-        span.dataset.col = String(c);
+        span.textContent = fileLetter(vc);
+        span.dataset.col = String(vc);
         els.files.appendChild(span);
       }
       syncCoordSize();
@@ -4853,8 +5210,9 @@
       for (let r = 0; r < SIZE; r++) {
         for (let c = 0; c < SIZE; c++) {
           const cell = state.cells[r][c];
+          /* Rank-only flip so α–θ stay left→right. */
           cell.style.gridRow = String(flip ? SIZE - r : r + 1);
-          cell.style.gridColumn = String(flip ? SIZE - c : c + 1);
+          cell.style.gridColumn = String(c + 1);
         }
       }
       paintCoords();
@@ -5292,11 +5650,8 @@
     }
 
     function toggleMusic() {
-      state.musicOn = !state.musicOn;
-      persistSoundPrefs();
-      paintSoundBtns();
-      if (state.musicOn) unlockAudio();
-      else stopMusic();
+      state.musicOn = false;
+      stopMusic();
     }
 
     function toggleSfx() {
@@ -5326,65 +5681,7 @@
     }
 
     function startMusic() {
-      if (!state.musicOn || document.hidden || !audioCtx) return;
-      if (music.gain) return;
-      const ctx = audioCtx;
-      const master = ctx.createGain();
-      master.gain.value = 0.15;
-      master.connect(ctx.destination);
-      music.gain = master;
-      function drone(freq, type, vol) {
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        const f = ctx.createBiquadFilter();
-        o.type = type;
-        o.frequency.value = freq;
-        f.type = "lowpass";
-        f.frequency.value = 1600;
-        g.gain.value = vol;
-        o.connect(f);
-        f.connect(g);
-        g.connect(master);
-        o.start();
-        music.nodes.push(o);
-      }
-      drone(82.41, "sine", 0.26);
-      drone(123.47, "sine", 0.16);
-      drone(164.81, "triangle", 0.11);
-      const melody = [
-        329.63, 392.00, 440.00, 493.88, 440.00, 392.00, 349.23, 329.63,
-        293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66, 246.94,
-        220.00, 246.94, 293.66, 329.63, 392.00, 329.63, 293.66, 246.94
-      ];
-      music.step = 0;
-      function pluck() {
-        if (!state.musicOn || !audioCtx || !music.gain) return;
-        const freq = melody[music.step % melody.length];
-        music.step += 1;
-        const t0 = ctx.currentTime;
-        function voice(type, f0, peak, dur) {
-          const o = ctx.createOscillator();
-          const g = ctx.createGain();
-          const f = ctx.createBiquadFilter();
-          o.type = type;
-          o.frequency.value = f0;
-          f.type = "lowpass";
-          f.frequency.value = 2800;
-          g.gain.setValueAtTime(0.0001, t0);
-          g.gain.exponentialRampToValueAtTime(peak, t0 + 0.02);
-          g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-          o.connect(f);
-          f.connect(g);
-          g.connect(master);
-          o.start(t0);
-          o.stop(t0 + dur + 0.05);
-        }
-        voice("triangle", freq, 0.46, 1.45);
-        voice("sine", freq * 2, 0.2, 0.95);
-        voice("sine", freq * 3 / 2, 0.1, 1.1);
-      }
-      pluck();
-      music.timer = setInterval(pluck, 920);
+      return;
     }
 
     function armAudioUnlock() {
@@ -5414,6 +5711,19 @@
       return state.sfxOn && audioCtx;
     }
 
+    /* Shared bus: pieces stay clearly audible at mid phone volume so ads don’t blast. */
+    const SFX_BUS = 1.55;
+
+    function sfxBus() {
+      if (!audioCtx) return null;
+      if (!sfxBusNode) {
+        sfxBusNode = audioCtx.createGain();
+        sfxBusNode.gain.value = SFX_BUS;
+        sfxBusNode.connect(audioCtx.destination);
+      }
+      return sfxBusNode;
+    }
+
     function getNoise() {
       if (!audioCtx) return null;
       if (noiseBuf) return noiseBuf;
@@ -5427,6 +5737,8 @@
     function clickWood(peak, hp) {
       if (!canSfx()) return;
       const ctx = audioCtx;
+      const out = sfxBus();
+      if (!out) return;
       const play = () => {
         const buf = getNoise();
         if (!buf) return;
@@ -5443,7 +5755,7 @@
         g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.1);
         src.connect(bp);
         bp.connect(g);
-        g.connect(ctx.destination);
+        g.connect(out);
         src.start(t0);
         src.stop(t0 + 0.12);
       };
@@ -5456,13 +5768,15 @@
       if (!audioCtx || audioCtx.state !== "running") unlockAudio();
       if (!audioCtx) return;
       const ctx = audioCtx;
+      const out = sfxBus();
+      if (!out) return;
       const play = () => {
         if (!state.sfxOn) return;
         const t0 = ctx.currentTime;
         const osc = ctx.createOscillator();
         const g = ctx.createGain();
         const f = ctx.createBiquadFilter();
-        const peak = gain || (isMobileAudio() ? 0.18 : 0.06);
+        const peak = gain || (isMobileAudio() ? 0.26 : 0.12);
         osc.type = type || "sine";
         osc.frequency.setValueAtTime(freq, t0);
         f.type = "lowpass";
@@ -5472,7 +5786,7 @@
         g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
         osc.connect(f);
         f.connect(g);
-        g.connect(ctx.destination);
+        g.connect(out);
         osc.start(t0);
         osc.stop(t0 + dur + 0.03);
       };
@@ -5485,37 +5799,42 @@
 
     function sfxMove() {
       const hot = isMobileAudio();
-      clickWood(hot ? 0.3 : 0.18, 640);
-      tone(196, 0.12, "sine", hot ? 0.16 : 0.07);
-      tone(392, 0.08, "triangle", hot ? 0.1 : 0.045);
+      clickWood(hot ? 0.4 : 0.26, 640);
+      tone(196, 0.12, "sine", hot ? 0.24 : 0.12);
+      tone(392, 0.08, "triangle", hot ? 0.15 : 0.08);
     }
     function sfxCapture() {
+      /* Capture only — never layer the land/move thud underneath. */
       const hot = isMobileAudio();
-      clickWood(hot ? 0.34 : 0.2, 520);
-      tone(174.61, 0.14, "sine", hot ? 0.18 : 0.08);
+      clickWood(hot ? 0.4 : 0.26, 980);
+      tone(523.25, 0.16, "triangle", hot ? 0.24 : 0.12);
+      tone(784, 0.22, "sine", hot ? 0.16 : 0.09);
       setTimeout(() => {
-        clickWood(hot ? 0.28 : 0.16, 980);
-        tone(523.25, 0.16, "triangle", hot ? 0.16 : 0.07);
-        tone(784, 0.2, "sine", hot ? 0.1 : 0.045);
-      }, 50);
+        tone(659.25, 0.18, "triangle", hot ? 0.18 : 0.1);
+      }, 70);
     }
     function sfxWin() {
       const hot = isMobileAudio();
       [329.63, 392, 493.88, 659.25].forEach((f, i) => {
-        setTimeout(() => tone(f, 0.3, "triangle", hot ? 0.16 : 0.08), i * 95);
+        setTimeout(() => tone(f, 0.3, "triangle", hot ? 0.22 : 0.12), i * 95);
       });
     }
     function sfxLose() {
       const hot = isMobileAudio();
-      tone(196, 0.28, "triangle", hot ? 0.14 : 0.06);
-      setTimeout(() => tone(146.83, 0.48, "sine", hot ? 0.16 : 0.07), 90);
+      tone(196, 0.28, "triangle", hot ? 0.2 : 0.1);
+      setTimeout(() => tone(146.83, 0.48, "sine", hot ? 0.22 : 0.11), 90);
+    }
+    function sfxClick() {
+      const hot = isMobileAudio();
+      tone(196, 0.06, "triangle", hot ? 0.16 : 0.09);
+      tone(294, 0.08, "triangle", hot ? 0.15 : 0.08);
     }
     function sfxStartGame() {
       const hot = isMobileAudio();
-      tone(246.94, 0.07, "triangle", hot ? 0.12 : 0.07);
-      setTimeout(() => tone(329.63, 0.12, "triangle", hot ? 0.14 : 0.08), 70);
-      setTimeout(() => tone(392.00, 0.16, "triangle", hot ? 0.15 : 0.09), 150);
-      setTimeout(() => tone(493.88, 0.34, "sine", hot ? 0.16 : 0.1), 250);
+      tone(246.94, 0.07, "triangle", hot ? 0.16 : 0.09);
+      setTimeout(() => tone(329.63, 0.12, "triangle", hot ? 0.18 : 0.1), 70);
+      setTimeout(() => tone(392.00, 0.16, "triangle", hot ? 0.2 : 0.11), 150);
+      setTimeout(() => tone(493.88, 0.34, "sine", hot ? 0.22 : 0.12), 250);
     }
     function sfxTest() {
       sfxMove();
@@ -5708,7 +6027,16 @@
         const p = cell.querySelector(".piece");
         if (p) p.classList.add("ghost");
       }
-      return;
+      if (state.mode === "tutorial") return;
+      const cell = state.cells[nr][nc];
+      const rect = cell.getBoundingClientRect();
+      const wrap = els.board.getBoundingClientRect();
+      els.tip.textContent = caps.length === 1
+        ? tr("tip.one")
+        : tr("tip.many", { n: caps.length });
+      els.tip.style.left = (rect.left - wrap.left + rect.width / 2) + "px";
+      els.tip.style.top = (rect.top - wrap.top) + "px";
+      els.tip.classList.add("show");
     }
 
     function onCellEnter(ev) {
@@ -5776,10 +6104,7 @@
       const c = Math.floor(((x - rect.left) / rect.width) * SIZE);
       let r = Math.floor(((y - rect.top) / rect.height) * SIZE);
       if (!inb(r, c)) return null;
-      if (boardFlipped()) {
-        r = SIZE - 1 - r;
-        return [r, SIZE - 1 - c];
-      }
+      if (boardFlipped()) return [SIZE - 1 - r, c];
       return [r, c];
     }
 
@@ -6201,11 +6526,17 @@
       els.overlayWin.setAttribute("aria-hidden", "false");
       if (ended.winner === humanSide()) sfxWin(); else sfxLose();
       updateNav();
+      try {
+        if (window.GameAds && typeof window.GameAds.onMatchEnd === "function") window.GameAds.onMatchEnd();
+      } catch (eAds) {}
     }
 
     async function startGame(diff) {
       unlockAudio();
       sfxStartGame();
+      try {
+        if (window.GameAds && typeof window.GameAds.onMatchStart === "function") window.GameAds.onMatchStart();
+      } catch (eAds) {}
       if (window.petteiaDismissIntro) window.petteiaDismissIntro();
       document.body.classList.remove("is-idle");
       if (net.ready) netPublish({ t: "bye" });
@@ -6333,6 +6664,10 @@
       }
       const logFold = document.getElementById("fold-log");
       if (logFold && on) logFold.open = true;
+      if (on) {
+        try { window.scrollTo(0, 0); } catch (e) {}
+        try { document.documentElement.scrollTop = 0; document.body.scrollTop = 0; } catch (e) {}
+      }
     }
 
     function paintCoach(opts) {
@@ -6565,15 +6900,15 @@
       assert(countPieces(init, WHITE) === 8 && countPieces(init, BLACK) === 8, "setup 8+8");
       assert(getMoves(init, WHITE).length === 48, "opening rook mobility");
       assert(RANK_GLYPH[5] === "Γ" && RANK_GLYPH[8] === "ΓIII", "attic ranks");
-      assert(alg(0, 7) === "αI", "rank 1 is black home row 0; α from black left");
-      assert(alg(1, 7) === "αII", "rank 2");
-      assert(alg(2, 7) === "αIII", "rank 3");
-      assert(alg(3, 7) === "αIIII", "rank 4");
-      assert(alg(4, 7) === "αΓ", "rank 5 is archaic pi");
-      assert(alg(5, 7) === "αΓI", "rank 6");
-      assert(alg(6, 7) === "αΓII", "rank 7");
-      assert(alg(7, 7) === "αΓIII", "rank 8 is white home row 7");
-      assert(alg(0, 0) === "θI", "file θ is black right / model col 0");
+      assert(alg(0, 0) === "αI", "rank 1 is black home row 0; α is white-left / model col 0");
+      assert(alg(1, 0) === "αII", "rank 2");
+      assert(alg(2, 0) === "αIII", "rank 3");
+      assert(alg(3, 0) === "αIIII", "rank 4");
+      assert(alg(4, 0) === "αΓ", "rank 5 is archaic pi");
+      assert(alg(5, 0) === "αΓI", "rank 6");
+      assert(alg(6, 0) === "αΓII", "rank 7");
+      assert(alg(7, 0) === "αΓIII", "rank 8 is white home row 7");
+      assert(alg(0, 7) === "θI", "file θ is white-right / black-left / model col 7");
 
       b = emptyBoard();
       b[7][0] = WHITE;
@@ -6594,21 +6929,21 @@
       b[0][6] = WHITE;
       b[1][7] = WHITE;
       caps = findCaptures(b, 0, 6, WHITE);
-      assert(caps.length === 1 && caps[0][1] === 7, "corner θΠΙΙΙ");
+      assert(caps.length === 1 && caps[0][1] === 7, "corner θI");
 
       b = emptyBoard();
       b[7][0] = BLACK;
       b[7][1] = WHITE;
       b[6][0] = WHITE;
       caps = findCaptures(b, 6, 0, WHITE);
-      assert(caps.length === 1 && caps[0][0] === 7, "corner αΙ");
+      assert(caps.length === 1 && caps[0][0] === 7, "corner αΓIII");
 
       b = emptyBoard();
       b[7][7] = BLACK;
       b[7][6] = WHITE;
       b[6][7] = WHITE;
       caps = findCaptures(b, 7, 6, WHITE);
-      assert(caps.length === 1 && caps[0][0] === 7 && caps[0][1] === 7, "corner θΙ");
+      assert(caps.length === 1 && caps[0][0] === 7 && caps[0][1] === 7, "corner θΓIII");
 
       b = emptyBoard();
       b[0][0] = BLACK;

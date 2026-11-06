@@ -184,10 +184,24 @@
       margin: 0 0 -0.1rem;
       filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35));
     }
-    html:not(.android-app):not(.is-native) body.is-idle .hero-logo {
-      display: block;
+    /* Web: never show the square logo above ΠΕΤΤΕΙΑ */
+    html:not(.android-app):not(.is-native) .hero-logo {
+      display: none !important;
     }
     .hero-brand button { pointer-events: auto; }
+
+    /* Web: language / sound — clearance from top (boot has its own layout) */
+    html:not(.android-app):not(.is-native) header.hero {
+      padding-top: 0.42rem;
+      padding-bottom: 0;
+      align-items: start;
+    }
+    html:not(.android-app):not(.is-native) .hero-tools,
+    html:not(.android-app):not(.is-native) .hero-end {
+      align-self: start;
+      margin-top: 0.12rem;
+      padding-top: 0;
+    }
 
     header.hero h1 {
       margin: 0;
@@ -2038,11 +2052,11 @@
         grid-template-rows: auto;
         justify-content: center;
         align-items: start;
-        gap: 0.85rem 1.25rem;
+        gap: 1.15rem 1.55rem;
         max-width: min(1480px, 100%);
         width: 100%;
-        margin: 0 auto;
-        padding: 0 0.6rem 0.35rem;
+        margin: 0.35rem auto 0;
+        padding: 0.35rem 0.7rem 0.55rem;
         overflow: auto;
         min-height: 0;
       }
@@ -2062,19 +2076,33 @@
         order: 2;
         position: relative;
         z-index: 1;
-        margin-top: 0;
+        margin-top: 0.2rem;
         width: 100%;
         max-width: 26rem;
         max-height: calc(100dvh - 6.5rem);
         overflow: auto;
         justify-self: stretch;
       }
-      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules {
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules,
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca {
         position: relative;
         z-index: 1;
         width: 100%;
         max-width: 100%;
         justify-self: stretch;
+        padding: 0 !important;
+        margin: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca::before,
+      html:not(.android-app):not(.is-native) body.is-tutorial .panel-greca::before {
+        display: none !important;
+        content: none;
+        height: 0;
+        margin: 0;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial #guide-coach {
         position: static;
@@ -2082,10 +2110,45 @@
         right: auto;
         bottom: auto;
         width: auto;
-        max-height: none;
+        display: flex;
+        flex-direction: column;
+        min-height: 26rem;
+        height: 26rem;
+        max-height: 26rem;
+        margin: 0;
+        padding: 0.85rem 1rem 0.75rem;
+        box-sizing: border-box;
+        overflow: hidden;
+        background: linear-gradient(180deg, #f7f0de 0%, var(--papyrus) 40%, #eadcb8 100%);
+        border: 1px solid var(--gold);
+        box-shadow: 0 10px 28px rgba(12, 20, 36, 0.28), inset 0 0 0 3px #122a4a;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-body {
+        min-height: 4.6rem;
+        margin-bottom: 0.55rem;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-task {
+        min-height: 4.4rem;
+        box-sizing: border-box;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .controls.coach-btns {
+        margin-top: 0.55rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        flex: 0 0 auto;
+      }
+      html:not(.android-app):not(.is-native) body.is-tutorial .coach-dots {
+        margin-bottom: 0.1rem;
+        flex: 0 0 auto;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial #board {
-        width: min(560px, calc(100dvh - 12.5rem), calc(100vw - 34rem));
+        width: min(520px, calc(100dvh - 14rem), calc(100vw - 36rem));
       }
       html:not(.android-app):not(.is-native) .side-stack {
         max-height: calc(100dvh - 7.5rem);
@@ -2130,7 +2193,7 @@
     @media (max-width: 980px), (hover: none) and (pointer: coarse) {
       :root {
         --nav-gap: max(var(--inset-bottom), 5.25rem);
-        --coach-dock: clamp(10.8rem, 34dvh, 14rem);
+        --coach-dock: clamp(10.5rem, 30svh, 12.8rem);
       }
       html, body {
         -webkit-tap-highlight-color: transparent;
@@ -2154,8 +2217,16 @@
       header.hero {
         grid-template-columns: 1fr 1fr;
         gap: 0;
-        padding: 0.06rem 0.28rem 0;
-        padding-top: max(0.06rem, var(--inset-top));
+        padding: 0.12rem 0.28rem 0;
+        padding-top: max(0.38rem, var(--inset-top));
+        align-items: start;
+      }
+      html:not(.android-app):not(.is-native) header.hero {
+        padding-top: max(0.42rem, var(--inset-top));
+      }
+      html:not(.android-app):not(.is-native) .hero-tools,
+      html:not(.android-app):not(.is-native) .hero-end {
+        margin-top: 0.1rem;
       }
       header.hero h1 button {
         font-size: clamp(1.55rem, 7.2vw, 2.05rem);
@@ -2217,15 +2288,17 @@
         box-sizing: border-box;
         gap: 0;
       }
-      /* Web mobile: same tutorial chrome as native app (board then coach dock) */
+      /* Web mobile: board size locked (svh + no flex-shrink) so coach text never resizes it */
       html:not(.android-app):not(.is-native) body.is-tutorial {
-        overflow: hidden;
-        height: 100dvh;
-        max-height: 100dvh;
+        overflow: hidden !important;
+        overscroll-behavior: none;
+        touch-action: manipulation;
+        height: 100svh;
+        max-height: 100svh;
         display: flex;
         flex-direction: column;
-        --coach-dock: clamp(10.8rem, 34dvh, 14rem);
-        --hero-h: 3.15rem;
+        --coach-dock: clamp(10.5rem, 30svh, 12.8rem);
+        --hero-h: 2.85rem;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial .layout {
         display: flex;
@@ -2235,13 +2308,14 @@
         height: auto;
         max-height: none;
         overflow: hidden;
-        gap: 0.28rem;
-        padding: 0.1rem 0.35rem 0;
+        gap: 0;
+        padding: 0.06rem 0.35rem 0;
         margin: 0;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial .board-column {
         order: 1;
-        flex: 0 1 auto;
+        flex: 0 0 auto;
+        flex-shrink: 0;
         min-height: 0;
         width: 100%;
         max-width: 100%;
@@ -2251,17 +2325,20 @@
       html:not(.android-app):not(.is-native) body.is-tutorial #board {
         width: min(
           100%,
-          calc(100dvh - var(--inset-top, 0px) - var(--hero-h, 3.15rem) - var(--coach-dock) - 0.6rem)
+          calc(100svh - var(--inset-top, 0px) - var(--hero-h, 2.85rem) - var(--coach-dock) - 0.55rem)
         );
         max-width: 100%;
+        flex-shrink: 0;
         aspect-ratio: 1 / 1;
         margin: 0 auto;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules,
       html:not(.android-app):not(.is-native) body.is-tutorial #panel-rules.panel-greca {
         order: 2;
-        flex: 1 1 auto;
+        flex: 0 0 var(--coach-dock);
         width: 100%;
+        height: var(--coach-dock);
+        max-height: var(--coach-dock);
         min-height: 0;
         margin: 0;
         padding: 0;
@@ -2279,6 +2356,7 @@
         bottom: auto;
         flex: 1 1 auto;
         width: 100%;
+        height: 100%;
         min-height: 0;
         max-height: 100%;
         margin: 0;
@@ -2295,6 +2373,7 @@
         min-height: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
       html:not(.android-app):not(.is-native) body.is-tutorial .controls.coach-btns {
         position: static;
@@ -2335,8 +2414,8 @@
         margin: 0;
       }
       body.is-tutorial header.hero {
-        padding: 0.08rem 0.35rem 0;
-        padding-top: max(0.08rem, var(--inset-top));
+        padding: 0.12rem 0.35rem 0;
+        padding-top: max(0.42rem, var(--inset-top));
       }
       body.is-tutorial header.hero h1 button {
         font-size: clamp(1.62rem, 7.8vw, 2.15rem);
@@ -2546,11 +2625,12 @@
       body.is-tutorial #board {
         width: min(
           100%,
-          calc(100dvh - var(--inset-top, 0px) - var(--hero-h, 3.15rem) - var(--coach-dock) - var(--bottom-chrome, var(--nav-gap, 0px)) - 0.6rem)
+          calc(100svh - var(--inset-top, 0px) - var(--hero-h, 2.85rem) - var(--coach-dock) - 0.55rem)
         );
         max-width: 100%;
         max-height: none;
         height: auto;
+        flex-shrink: 0;
         aspect-ratio: 1;
         margin: 0 auto;
       }
@@ -3209,7 +3289,7 @@
       <div class="boot-greca boot-greca-l" aria-hidden="true"></div>
       <div class="boot-greca boot-greca-r" aria-hidden="true"></div>
       <div class="boot-tile">
-        <img src="/brand/boot-tile.png" alt="" width="512" height="512" decoding="async" />
+        <img src="boot-tile.png" alt="" width="512" height="512" decoding="async" />
       </div>
       <p class="boot-title">ΠΕΤΤΕΙΑ</p>
       <p class="boot-sub">PETTEIA</p>
@@ -3244,7 +3324,7 @@
       </div>
     </div>
     <div class="hero-brand">
-      <img class="hero-logo" src="/brand/icon-full.png" alt="" width="512" height="512" decoding="async" />
+      <img class="hero-logo" src="brand/icon-full.png" alt="" width="512" height="512" decoding="async" />
       <h1><button type="button" id="title-reload" data-i18n-title="title.reload" title="Menú principal">ΠΕΤΤΕΙΑ</button></h1>
     </div>
     <div class="hero-end">
@@ -5029,7 +5109,7 @@
     }
 
     function fileLetter(c) {
-      return COLS[SIZE - 1 - c];
+      return COLS[c];
     }
 
     function rankNum(r) {
@@ -5078,14 +5158,14 @@
     function stampSquareCoords(cell, r, c) {
       const flip = boardFlipped();
       const botR = flip ? 0 : SIZE - 1;
-      const leftC = flip ? SIZE - 1 : 0;
+      /* α stays on the visual left even when ranks are flipped for black. */
       if (r === botR) {
         const s = document.createElement("span");
         s.className = "sq-coord sq-file";
         s.textContent = fileLetter(c);
         cell.appendChild(s);
       }
-      if (c === leftC) {
+      if (c === 0) {
         const s = document.createElement("span");
         s.className = "sq-coord sq-rank";
         s.textContent = RANK_GLYPH[rankNum(r)];
@@ -5109,10 +5189,9 @@
         els.ranks.appendChild(span);
       }
       for (let vc = 0; vc < SIZE; vc++) {
-        const c = flip ? SIZE - 1 - vc : vc;
         const span = document.createElement("span");
-        span.textContent = fileLetter(c);
-        span.dataset.col = String(c);
+        span.textContent = fileLetter(vc);
+        span.dataset.col = String(vc);
         els.files.appendChild(span);
       }
       syncCoordSize();
@@ -5131,8 +5210,9 @@
       for (let r = 0; r < SIZE; r++) {
         for (let c = 0; c < SIZE; c++) {
           const cell = state.cells[r][c];
+          /* Rank-only flip so α–θ stay left→right. */
           cell.style.gridRow = String(flip ? SIZE - r : r + 1);
-          cell.style.gridColumn = String(flip ? SIZE - c : c + 1);
+          cell.style.gridColumn = String(c + 1);
         }
       }
       paintCoords();
@@ -6024,10 +6104,7 @@
       const c = Math.floor(((x - rect.left) / rect.width) * SIZE);
       let r = Math.floor(((y - rect.top) / rect.height) * SIZE);
       if (!inb(r, c)) return null;
-      if (boardFlipped()) {
-        r = SIZE - 1 - r;
-        return [r, SIZE - 1 - c];
-      }
+      if (boardFlipped()) return [SIZE - 1 - r, c];
       return [r, c];
     }
 
@@ -6587,6 +6664,10 @@
       }
       const logFold = document.getElementById("fold-log");
       if (logFold && on) logFold.open = true;
+      if (on) {
+        try { window.scrollTo(0, 0); } catch (e) {}
+        try { document.documentElement.scrollTop = 0; document.body.scrollTop = 0; } catch (e) {}
+      }
     }
 
     function paintCoach(opts) {
@@ -6819,15 +6900,15 @@
       assert(countPieces(init, WHITE) === 8 && countPieces(init, BLACK) === 8, "setup 8+8");
       assert(getMoves(init, WHITE).length === 48, "opening rook mobility");
       assert(RANK_GLYPH[5] === "Γ" && RANK_GLYPH[8] === "ΓIII", "attic ranks");
-      assert(alg(0, 7) === "αI", "rank 1 is black home row 0; α from black left");
-      assert(alg(1, 7) === "αII", "rank 2");
-      assert(alg(2, 7) === "αIII", "rank 3");
-      assert(alg(3, 7) === "αIIII", "rank 4");
-      assert(alg(4, 7) === "αΓ", "rank 5 is archaic pi");
-      assert(alg(5, 7) === "αΓI", "rank 6");
-      assert(alg(6, 7) === "αΓII", "rank 7");
-      assert(alg(7, 7) === "αΓIII", "rank 8 is white home row 7");
-      assert(alg(0, 0) === "θI", "file θ is black right / model col 0");
+      assert(alg(0, 0) === "αI", "rank 1 is black home row 0; α is white-left / model col 0");
+      assert(alg(1, 0) === "αII", "rank 2");
+      assert(alg(2, 0) === "αIII", "rank 3");
+      assert(alg(3, 0) === "αIIII", "rank 4");
+      assert(alg(4, 0) === "αΓ", "rank 5 is archaic pi");
+      assert(alg(5, 0) === "αΓI", "rank 6");
+      assert(alg(6, 0) === "αΓII", "rank 7");
+      assert(alg(7, 0) === "αΓIII", "rank 8 is white home row 7");
+      assert(alg(0, 7) === "θI", "file θ is white-right / black-left / model col 7");
 
       b = emptyBoard();
       b[7][0] = WHITE;
@@ -6848,21 +6929,21 @@
       b[0][6] = WHITE;
       b[1][7] = WHITE;
       caps = findCaptures(b, 0, 6, WHITE);
-      assert(caps.length === 1 && caps[0][1] === 7, "corner θΠΙΙΙ");
+      assert(caps.length === 1 && caps[0][1] === 7, "corner θI");
 
       b = emptyBoard();
       b[7][0] = BLACK;
       b[7][1] = WHITE;
       b[6][0] = WHITE;
       caps = findCaptures(b, 6, 0, WHITE);
-      assert(caps.length === 1 && caps[0][0] === 7, "corner αΙ");
+      assert(caps.length === 1 && caps[0][0] === 7, "corner αΓIII");
 
       b = emptyBoard();
       b[7][7] = BLACK;
       b[7][6] = WHITE;
       b[6][7] = WHITE;
       caps = findCaptures(b, 7, 6, WHITE);
-      assert(caps.length === 1 && caps[0][0] === 7 && caps[0][1] === 7, "corner θΙ");
+      assert(caps.length === 1 && caps[0][0] === 7 && caps[0][1] === 7, "corner θΓIII");
 
       b = emptyBoard();
       b[0][0] = BLACK;
