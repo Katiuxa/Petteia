@@ -4,7 +4,7 @@ Juego griego de tablero. Web y Android en el mismo repo, en carpetas distintas.
 
 ## Web
 
-https://petteia.vercel.app
+https://petteiagame.vercel.app
 
 Código en `docs/`. Esa carpeta es la que se publica en Vercel.
 
