@@ -1,32 +1,32 @@
-Título: Petteia — ΠΕΤΤΕΙΑ
-Nombre corto: Petteia
-Paquete: com.metamovidas.petteia
-Categoría: Juegos / Estrategia / Tablero
-Clasificación: PEGI 3 / Everyone
+Title: Petteia — ΠΕΤΤΕΙΑ
+Short name: Petteia
+Package: com.metamovidas.petteia
+Category: Games / Strategy / Board
+Rating: PEGI 3 / Everyone
 
-Descripción corta:
-Petteia, el juego griego de la pinza. Juega contra la máquina o en línea, con el mismo tablero y estilo de la web.
+Short description:
+Petteia, the Greek pincer game. Play against the computer or online, with the same board and style as the website.
 
-Descripción:
-ΠΕΤΤΕΙΑ es el juego de tablero de la Grecia clásica. Mueve como la torre, captura en pinza y vence dejando al rival sin piezas o sin jugadas.
+Description:
+ΠΕΤΤΕΙΑ is the board game of classical Greece. Move like a rook, capture by pincer, and win by leaving the opponent with no pieces or no moves.
 
-• Tutorial guiado
-• Cinco niveles de dificultad, de Paidion a Palamedes
-• Partidas en línea con código de sala
-• Español, English, Français y Русский
-• El mismo diseño de mármol, oro y egeo de la web
+• Guided tutorial
+• Five difficulty levels, from Paidion to Palamedes
+• Online games with a room code
+• Spanish, English, French, and Russian
+• The same marble, gold, and Aegean design as the website
 
-Sin anuncios en esta versión. Se podrán activar más adelante en una actualización.
+No ads in this version. They can be turned on later in an update.
 
-Icono 512: store-assets/icon-512.png
-Gráfico destacada 1024x500: store-assets/feature-graphic.png
-Política de privacidad: publica www/privacy.html en Vercel y pega la URL en Play Console.
+Icon 512: store-assets/icon-512.png
+Feature graphic 1024x500: store-assets/feature-graphic.png
+Privacy policy: publish www/privacy.html on Vercel and paste the URL into Play Console.
 
-Cuando actives publicidad:
-1. Crea la app en AdMob
-2. Pon los IDs en www/js/ads.js (enabled: true)
-3. Descomenta AdMob en AndroidManifest.xml y android/app/build.gradle
-4. Declara el permiso AD_ID en Play Console
-5. Sube un AAB nuevo (versionCode 2)
+When you turn advertising on:
+1. Create the app in AdMob
+2. Put the IDs in www/js/ads.js (enabled: true)
+3. Uncomment AdMob in AndroidManifest.xml and android/app/build.gradle
+4. Declare the AD_ID permission in Play Console
+5. Upload a new AAB (versionCode 2)
 
-La clave de firma está en android/keystore/ — GUÁRDALA. Sin ella no hay actualizaciones en Play.
+The signing key is in android/keystore/ — KEEP IT. Without it there are no Play updates.
